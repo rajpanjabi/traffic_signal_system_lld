@@ -60,8 +60,121 @@ public class Intersection {
         System.out.println("Cycle " + (cyclePaused ? "paused" : "resumed") + " for intersection " + id);
     }
 
+    public void setAllSignalsToRed() {
+        for (TrafficLight light : trafficLights.values()) {
+            String currentState = light.getCurrentStateName();
+            if ("GREEN".equals(currentState)) {
+                // GREEN → YELLOW → RED (proper sequence)
+                light.turnYellow();
+                // In a real system, we'd wait for yellow duration, then turn red
+                // For simulation, we'll turn red immediately after yellow
+                light.turnRed();
+            } else if ("YELLOW".equals(currentState)) {
+                // YELLOW → RED
+                light.turnRed();
+            } else if ("RED".equals(currentState)) {
+                // Already RED, no change needed
+                System.out.println("Traffic light " + light.getDirection() + " is already RED");
+            } else {
+                // OFF or any other state → RED
+                light.turnRed();
+            }
+        }
+        System.out.println("All signals set to RED for intersection " + id);
+    }
+
+    public void setSignalToGreen(Direction direction) {
+        TrafficLight light = trafficLights.get(direction);
+        if (light != null) {
+            light.turnGreen();
+            System.out.println("Signal " + direction + " set to GREEN for intersection " + id);
+        }
+    }
+    
+    public void setSignalToYellow(Direction direction) {
+        TrafficLight light = trafficLights.get(direction);
+        if (light != null) {
+            light.turnYellow();
+            System.out.println("Signal " + direction + " set to YELLOW for intersection " + id);
+        }
+    }
+    
+    public void setSignalToRed(Direction direction) {
+        TrafficLight light = trafficLights.get(direction);
+        if (light != null) {
+            light.turnRed();
+            System.out.println("Signal " + direction + " set to RED for intersection " + id);
+        }
+    }
+    
+    public void setSignalToOff(Direction direction) {
+        TrafficLight light = trafficLights.get(direction);
+        if (light != null) {
+            light.turnOff();
+            System.out.println("Signal " + direction + " set to OFF for intersection " + id);
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "Intersection{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", emergencyMode=" + isEmergencyMode +
+                ", cyclePaused=" + isCyclePaused +
+                '}';
+    }
+
    
 
 
     
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    
+    // /**
+    //  * Emergency method to safely transition a signal to RED following proper state sequence
+    //  */
+    // public void emergencyTransitionToRed(Direction direction) {
+    //     TrafficLight light = trafficLights.get(direction);
+    //     if (light != null) {
+    //         String currentState = light.getCurrentStateName();
+    //         if ("GREEN".equals(currentState)) {
+    //             // GREEN → YELLOW → RED (emergency sequence)
+    //             System.out.println("Emergency transition: " + direction + " GREEN → YELLOW → RED");
+    //             light.turnYellow();
+    //             light.turnRed();
+    //         } else if ("YELLOW".equals(currentState)) {
+    //             // YELLOW → RED
+    //             System.out.println("Emergency transition: " + direction + " YELLOW → RED");
+    //             light.turnRed();
+    //         } else if ("RED".equals(currentState)) {
+    //             // Already RED
+    //             System.out.println("Emergency transition: " + direction + " already RED");
+    //         } else {
+    //             // OFF or any other state → RED
+    //             System.out.println("Emergency transition: " + direction + " → RED");
+    //             light.turnRed();
+    //         }
+    //     }
+    // }
+
+    
